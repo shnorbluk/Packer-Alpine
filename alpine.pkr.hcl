@@ -32,7 +32,12 @@ variable "iso_checksum" {
 
 variable "vm_name" {
   type    = string
-  default = "packer-alpine-3.23.2"
+  default = "alpine-3.23.2"
+}
+
+variable "disk_size_mb" {
+  type    = number
+  default = 8192 // 8 GB
 }
 
 // -----------------------------------------------------------
@@ -49,13 +54,12 @@ source "virtualbox-iso" "alpine" {
   // --- B. Configuration de la VM ---
   vm_name             = var.vm_name
   guest_os_type       = "Linux26_64"
-  disk_size           = 8192 // 8 GB
+  disk_size           = var.disk_size_mb
   headless            = false // Lancer la VM sans interface graphique (plus rapide)
 
   // Configuration mémoire/CPU via VBoxManage
   vboxmanage          = [
-//    ["modifyvm", "{{ .Name }}", "--memory", "512"],
-    ["modifyvm", "{{ .Name }}", "--memory", "4092"],
+    ["modifyvm", "{{ .Name }}", "--memory", "512"],
     ["modifyvm", "{{ .Name }}", "--cpus", "1"],
     ["modifyvm", "{{ .Name }}", "--accelerate3d", "off"], // Désactiver 3D acceleration si activée
     ["modifyvm", "{{ .Name }}", "--graphicscontroller", "vboxvga"]  // Spécifie VBoxVGA comme contrôleur graphique
@@ -64,11 +68,11 @@ source "virtualbox-iso" "alpine" {
   // --- C. Configuration SSH (Post-installation) ---
   ssh_username        = "root"
   // Nous définissons le mot de passe dans le fichier 'answers.txt' pour l'installation
-  ssh_password        = "passwordpass"
+  ssh_password        = "passwordpas"
   ssh_wait_timeout    = "20m"
 
   // --- D. Commande de Démarrage (Automatisation de l'Installation) ---
-  boot_wait           = "20s"
+  boot_wait           = "25s"
   boot_command        = [
     "<wait>",
     "root<enter>",
@@ -77,12 +81,11 @@ source "virtualbox-iso" "alpine" {
     "<wait10>", // Attendre 10 secondes pour que l'interface obtienne une adresse IP
     "wget -O /tmp/answers.txt http://{{ .HTTPIP }}:{{ .HTTPPort }}/answers.txt<enter>", // Télécharger le fichier de réponses
     "setup-alpine -f /tmp/answers.txt<enter>", // Lancer l'installation avec le fichier
-    "<wait15>passwordpass<enter>passwordpass<enter>",
+    "<wait15>passwordpas<enter>passwordpas<enter>",
     "<wait20>y<enter>",
     "<wait20>mount /dev/sda3 /mnt<enter>",
     "echo 'PermitRootLogin yes' >> /mnt/etc/ssh/sshd_config<enter>",
-    "reboot<enter>",                 // Le script setup-alpine demande un reboot à la fin
-//    "<wait>"
+    "reboot<enter>"                 // Le script setup-alpine demande un reboot à la fin
   ]
   shutdown_command    = "poweroff"
 }
@@ -109,6 +112,6 @@ build {
 
   // --- B. Post-Processor Vagrant (Cr�er la Box Vagrant) ---
   post-processor "vagrant" {
-    output = "alpine-${var.vm_name}.box"
+    output = "${var.vm_name}.box"
   }
 }

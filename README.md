@@ -12,7 +12,6 @@ https://github.com/bobfraser1/packer-alpine
 - Alpine Linux **3.23.x**
 - VirtualBox-compatible
 - Vagrant box output
-  .
 
 ## Requirements
 
