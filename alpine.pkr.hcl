@@ -68,7 +68,7 @@ source "virtualbox-iso" "alpine" {
   // --- C. Configuration SSH (Post-installation) ---
   ssh_username        = "root"
   // Nous définissons le mot de passe dans le fichier 'answers.txt' pour l'installation
-  ssh_password        = "passwordpas"
+  ssh_password        = "passwordpa"
   ssh_wait_timeout    = "20m"
 
   // --- D. Commande de Démarrage (Automatisation de l'Installation) ---
@@ -81,7 +81,7 @@ source "virtualbox-iso" "alpine" {
     "<wait10>", // Attendre 10 secondes pour que l'interface obtienne une adresse IP
     "wget -O /tmp/answers.txt http://{{ .HTTPIP }}:{{ .HTTPPort }}/answers.txt<enter>", // Télécharger le fichier de réponses
     "setup-alpine -f /tmp/answers.txt<enter>", // Lancer l'installation avec le fichier
-    "<wait15>passwordpas<enter>passwordpas<enter>",
+    "<wait15>passwordpa<enter>passwordpa<enter>",
     "<wait20>y<enter>",
     "<wait20>mount /dev/sda3 /mnt<enter>",
     "echo 'PermitRootLogin yes' >> /mnt/etc/ssh/sshd_config<enter>",
@@ -102,7 +102,7 @@ build {
       // Mettre à jour et installer les dépendances de base
       "apk update",
       "apk upgrade",
-      "apk add open-vm-tools", // open-vm-tools pour VirtualBox/VMware
+      "apk add virtualbox-guest-additions sudo", // open-vm-tools pour VirtualBox/VMware
 
       // Nettoyage des fichiers temporaires et de cache
       "rm -rf /var/cache/apk/*",
