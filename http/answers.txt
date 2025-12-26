@@ -1,0 +1,47 @@
+KEYMAPOPTS="us us"
+
+# Hostname
+HOSTNAMEOPTS="-n alpine-vm"
+
+# Interface réseau (par défaut 'eth0')
+INTERFACESOPTS="auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+    hostname alpine-test
+"
+
+# Configuration réseau (dhcp, static, none)
+# Utiliser 'dhcp' si vous n'avez pas de configuration statique
+IPADDR="dhcp"
+
+# Fuseau horaire (Ex: Europe/Paris)
+TIMEZONEOPTS="-z Europe/Paris"
+
+# Proxy HTTP (laisser vide)
+PROXYOPTS="none"
+
+# Client NTP
+NTPOPTS="-c busybox"
+
+# Random APK mirror
+APKREPOSOPTS="-1 -c"
+
+# Serveur SSH (openssh ou none)
+SSHDOPTS="-c openssh"
+
+# Disque à utiliser pour l'installation (souvent 'sda' ou 'vda')
+DISKOPTS="-m sys /dev/sda"
+
+USEROPTS="-a -u vagrant"
+LBUOPTS=none
+
+APKCACHEOPTS="/var/cache/apk"
+
+# Type d'installation (sys, data, lvm)
+# 'sys' pour une installation standard sur le disque
+INSTALL_TYPE="sys"
+
+# Confirmer l'effacement du disque
+CONFIRM_WIPE="yes"
