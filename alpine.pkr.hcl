@@ -107,7 +107,7 @@ build {
       // Mettre à jour et installer les dépendances de base
       "apk update",
       "apk upgrade",
-      "apk add virtualbox-guest-additions sudo", // open-vm-tools pour VirtualBox/VMware
+      "apk add virtualbox-guest-additions sudo",
 
       // Nettoyage des fichiers temporaires et de cache
       "rm -rf /var/cache/apk/*",
