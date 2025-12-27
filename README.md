@@ -39,14 +39,14 @@ Run:
 packer build alpine.pkr.hcl
 ```
 
-This will produce a Vagrant box file: `alpine-packer-alpine-3.23.2.box`.
+This will produce a Vagrant box file: `alpine-3.23.2.box`.
 
 ## Using the generated Vagrant box
 
 Add the box locally:
 
 ```bash
-vagrant box add alpine-local alpine-packer-alpine-3.23.2.box
+vagrant box add alpine-local alpine-3.23.2.box
 ```
 
 Example Vagrantfile:
