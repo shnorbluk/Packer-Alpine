@@ -99,7 +99,7 @@ build {
   // --- A. Provisioner Shell (Scripts de post-installation) ---
   provisioner "file" {
     source      = "vagrant.pub"
-    destination = "/home/vagrant/.ssh/authorized_keys"
+    destination = "/root/authorized_keys"
   }
 
   provisioner "shell" {
@@ -108,14 +108,18 @@ build {
       "apk update",
       "apk upgrade",
       "apk add virtualbox-guest-additions sudo",
+      "mkdir -p /home/vagrant/.ssh",
+      "mv /root/authorized_keys /home/vagrant/.ssh/authorized_keys",
+      "chmod 600 /home/vagrant/.ssh/authorized_keys",
+      "chown -R vagrant:vagrant /home/vagrant/.ssh",
 
       // Nettoyage des fichiers temporaires et de cache
       "rm -rf /var/cache/apk/*",
       "rm -f /tmp/answers.txt",
     ]
   }
-
-  // --- B. Post-Processor Vagrant (Cr�er la Box Vagrant) ---
+      
+  // --- B. Post-Processor Vagrant (Create the  Vagrant Box) ---
   post-processor "vagrant" {
     output = "${var.vm_name}.box"
   }
