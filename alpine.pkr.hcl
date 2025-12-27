@@ -97,6 +97,11 @@ build {
   sources = ["source.virtualbox-iso.alpine"]
 
   // --- A. Provisioner Shell (Scripts de post-installation) ---
+  provisioner "file" {
+    source      = "vagrant.pub"
+    destination = "/home/vagrant/.ssh/authorized_keys"
+  }
+
   provisioner "shell" {
     inline = [
       // Mettre à jour et installer les dépendances de base
