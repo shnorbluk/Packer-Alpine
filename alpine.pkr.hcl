@@ -109,7 +109,7 @@ build {
   // --- A. Provisioner Shell (Scripts de post-installation) ---
   provisioner "file" {
     source      = "vagrant.pub"
-    destination = "/root/authorized_keys"
+    destination = "/tmp/authorized_keys"
   }
 
   provisioner "shell" {
@@ -118,8 +118,10 @@ build {
       "apk update",
       "apk upgrade",
       "apk add virtualbox-guest-additions sudo",
-      "mkdir -p /home/vagrant/.ssh",
-      "mv /root/authorized_keys /home/vagrant/.ssh/authorized_keys",
+
+      // Configuring SSH for Vagrant user
+      "mkdir /home/vagrant/.ssh",
+      "mv /tmp/authorized_keys /home/vagrant/.ssh/authorized_keys",
       "chmod 600 /home/vagrant/.ssh/authorized_keys",
       "chown -R vagrant:vagrant /home/vagrant/.ssh",
 
