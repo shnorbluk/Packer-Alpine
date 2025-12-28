@@ -124,6 +124,7 @@ build {
       "mv /tmp/authorized_keys /home/vagrant/.ssh/authorized_keys",
       "chmod 600 /home/vagrant/.ssh/authorized_keys",
       "chown -R vagrant:vagrant /home/vagrant/.ssh",
+      "echo vagrant 'ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers.d/vagrant",
 
       // Changing passwords
       "echo 'root:${var.root_password}' | chpasswd",
