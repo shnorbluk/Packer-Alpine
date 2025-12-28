@@ -23,6 +23,20 @@ You need the following tools installed:
 
 Make sure hardware virtualization is enabled in your BIOS (Intel VT-x / AMD-V).
 
+## Quick start
+
+To make a useable Alpine Virtualbox VM:
+
+```sh
+make
+```
+
+And then connect to it:
+
+```sh
+vagrant ssh
+```
+
 ## Initialization
 
 Before building, initialize Packer plugins:
