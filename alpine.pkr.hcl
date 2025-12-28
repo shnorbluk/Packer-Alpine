@@ -133,6 +133,7 @@ build {
       // Nettoyage des fichiers temporaires et de cache
       "rm -rf /var/cache/apk/*",
       "rm -f /tmp/answers.txt",
+      "sed -i '/PermitRootLogin yes/d' /etc/ssh/sshd_config"
     ]
   }
       
