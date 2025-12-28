@@ -40,6 +40,16 @@ variable "disk_size_mb" {
   default = 8192 // 8 GB
 }
 
+variable "root_password" {
+  type    = string
+  default = "vagrant"
+}
+
+variable "vagrant_password" {
+  type    = string
+  default = "vagrant"
+}
+
 // -----------------------------------------------------------
 // 2. BLOC SOURCE (BUILDER VIRTUALBOX-ISO)
 // -----------------------------------------------------------
@@ -112,6 +122,10 @@ build {
       "mv /root/authorized_keys /home/vagrant/.ssh/authorized_keys",
       "chmod 600 /home/vagrant/.ssh/authorized_keys",
       "chown -R vagrant:vagrant /home/vagrant/.ssh",
+
+      // Changing passwords
+      "echo 'root:${var.root_password}' | chpasswd",
+      "echo 'vagrant:${var.vagrant_password}' | chpasswd",
 
       // Nettoyage des fichiers temporaires et de cache
       "rm -rf /var/cache/apk/*",
