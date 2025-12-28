@@ -43,5 +43,3 @@ APKCACHEOPTS="/var/cache/apk"
 # 'sys' pour une installation standard sur le disque
 INSTALL_TYPE="sys"
 
-# Confirmer l'effacement du disque
-CONFIRM_WIPE="yes"
