@@ -130,6 +130,18 @@ build {
       "echo 'root:${var.root_password}' | chpasswd",
       "echo 'vagrant:${var.vagrant_password}' | chpasswd",
 
+      // DOCKER
+      "apk add docker",
+      "mkdir /etc/docker; echo '{\"cgroup-parent\": \"/dockerContainers\"}' > /etc/docker/daemon.json", # for cgroup.procs: operation not supported
+      "echo 'rc_cgroup_mode=\"hybrid\"' >> /etc/rc.conf",
+      "rc-service cgroups start",
+      "rc-update add cgroups default",
+      "service docker start",
+      "addgroup vagrant docker",
+      "rc-update add docker boot",
+      "modprobe fuse", # for error gathering device information while adding custom device "/dev/fuse": no such file or directory.
+
+
       // Nettoyage des fichiers temporaires et de cache
       "rm -rf /var/cache/apk/*",
       "rm -f /tmp/answers.txt",
