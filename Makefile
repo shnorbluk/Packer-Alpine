@@ -4,7 +4,7 @@ PACKER_FILE = alpine.pkr.hcl
 
 .PHONY: all clean packer vagrant rebuild
 
-all: packer up
+all: packer vagrant
 
 image box packer: 
 	packer init .
