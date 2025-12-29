@@ -132,14 +132,18 @@ build {
 
       // DOCKER
       "apk add docker",
-      "mkdir /etc/docker; echo '{\"cgroup-parent\": \"/dockerContainers\"}' > /etc/docker/daemon.json", # for cgroup.procs: operation not supported
+      "sed -i '/default_kernel_opts=/cdefault_kernel_opts=\"quiet rootfstype=ext4 cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 systemd.unified_cgroup_hierarchy=1\"'  /etc/update-extlinux.conf",
+      "sed -i 's/need/need localmount/' /etc/init.d/docker",
+      "sed -i '/checkpath/a\\\\tcheckpath -d -m 0755 -o root:docker /var/run/docker' /etc/init.d/docker",
+      "sed -i '/start_pre()/a   sleep 2' /etc/init.d/docker",
       "echo 'rc_cgroup_mode=\"hybrid\"' >> /etc/rc.conf",
-      "rc-service cgroups start",
       "rc-update add cgroups default",
-      "service docker start",
+      "rc-update add docker default",
+      "rc-service cgroups start",
+      "rc-service docker start",
       "addgroup vagrant docker",
-      "rc-update add docker boot",
-      "modprobe fuse", # for error gathering device information while adding custom device "/dev/fuse": no such file or directory.
+      "rc-update -u",
+      # "modprobe fuse", # for error gathering device information while adding custom device "/dev/fuse": no such file or directory.
 
 
       // Nettoyage des fichiers temporaires et de cache
