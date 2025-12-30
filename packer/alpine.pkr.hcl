@@ -50,6 +50,11 @@ variable "vagrant_password" {
   default = "vagrant"
 }
 
+variable "install_docker" {
+  type    = bool
+  default = false
+}
+
 // -----------------------------------------------------------
 // 2. BLOC SOURCE (BUILDER VIRTUALBOX-ISO)
 // -----------------------------------------------------------
@@ -131,20 +136,12 @@ build {
       "echo 'vagrant:${var.vagrant_password}' | chpasswd",
 
       // DOCKER
-      "apk add docker",
-      "sed -i '/default_kernel_opts=/cdefault_kernel_opts=\"quiet rootfstype=ext4 cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 systemd.unified_cgroup_hierarchy=1\"'  /etc/update-extlinux.conf",
-      "sed -i 's/need/need localmount/' /etc/init.d/docker",
-      "sed -i '/checkpath/a\\\\tcheckpath -d -m 0755 -o root:docker /var/run/docker' /etc/init.d/docker",
-      "sed -i '/start_pre()/a   sleep 2' /etc/init.d/docker",
-      "echo 'rc_cgroup_mode=\"hybrid\"' >> /etc/rc.conf",
-      "rc-update add cgroups default",
-      "rc-update add docker default",
-      "rc-service cgroups start",
-      "rc-service docker start",
-      "addgroup vagrant docker",
-      "rc-update -u",
-      # "modprobe fuse", # for error gathering device information while adding custom device "/dev/fuse": no such file or directory.
-
+      "if ${var.install_docker}; then",
+      " apk add docker",
+      " addgroup vagrant docker",
+      " rc-update add docker default",
+      " rc-update -u",
+      "fi",
 
       // Nettoyage des fichiers temporaires et de cache
       "rm -rf /var/cache/apk/*",
