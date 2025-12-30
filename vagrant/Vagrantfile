@@ -1,4 +1,4 @@
-# packer_file = "../packer/alpine.pkr.hcl"
+packer_file = "../packer/alpine.pkr.hcl"
 box_file = "../packer/alpine-3.23.2.box"
 # box_name = "alpine-local"
 # $script = <<-SCRIPT
@@ -6,9 +6,11 @@ box_file = "../packer/alpine-3.23.2.box"
 # packer build ${packer_file}
 # vagrant box add --force alpine-local ${box_file}
 # SCRIPT
-# script2 = "packer init ${packer_file}
-# packer build ${packer_file}
-# vagrant box add --force alpine-local ${box_file}"
+script = "cd ../packer
+packer init #{packer_file}
+packer build #{packer_file}
+cd ../vagrant
+vagrant box add --force alpine-local #{box_file}"
 
 Vagrant.configure("2") do |config|
     config.vm.box = "alpine-local"
@@ -20,18 +22,18 @@ Vagrant.configure("2") do |config|
     config.trigger.before :up do |trigger|
         rebuild = false
         if !File.exist?(box_file)
-    #         trigger.info = "Packer box not found, building..."
-    #         rebuild = true
-    #     elsif File.mtime(packer_file) > File.mtime(box_file)
-    #         trigger.info = "Packer recipe file modified, rebuilding..."
-    #         rebuild = true
-    #     else
-    #         trigger.info = "Packer box is up to date"
+            trigger.info = "Packer box not found, building..."
+            rebuild = true
+        elsif File.mtime(packer_file) > File.mtime(box_file)
+            trigger.info = "Packer recipe file modified, rebuilding..."
+            rebuild = true
+        else
+            trigger.info = "Packer box is up to date"
         end
-        # if rebuild
-        #     trigger.run = {
-        #         inline:     $script
-        #     }
-        # end
+        if rebuild
+            trigger.run = {
+                inline:     script
+            }
+        end
     end
 end
