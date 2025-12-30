@@ -55,6 +55,11 @@ variable "install_docker" {
   default = false
 }
 
+variable "install_podman" {
+  type    = bool
+  default = true
+}
+
 // -----------------------------------------------------------
 // 2. BLOC SOURCE (BUILDER VIRTUALBOX-ISO)
 // -----------------------------------------------------------
@@ -141,6 +146,19 @@ build {
       " addgroup vagrant docker",
       " rc-update add docker default",
       " rc-update -u",
+      "fi",
+
+      "if ${var.install_podman}; then",
+      " apk add podman",
+      " echo vagrant:100000:65536 | tee /etc/subuid > /etc/subgid", # for "cannot find UID/GID for user vagrant"
+      " echo mount --make-shared / > /etc/local.d/mount-shared.start", # for "WARN[0000] "/" is not a shared mount"
+      " chmod +x /etc/local.d/mount-shared.start",
+      " mkdir /dev/net; mknod /dev/net/tun c 10 200; chmod 0666 /dev/net/tun", # (https://www.kernel.org/doc/html/latest/networking/tuntap.html) for /usr/bin/slirp4netns failed
+      " rc-update add local default",
+      " openrc",
+      " if ! ${var.install_docker}; then",
+      "  ln -s /usr/bin/podman /usr/bin/docker", // Créer un alias docker -> podman si docker n'est pas installé
+      " fi",
       "fi",
 
       // Nettoyage des fichiers temporaires et de cache
