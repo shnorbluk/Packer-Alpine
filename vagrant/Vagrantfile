@@ -12,10 +12,13 @@ packer build #{packer_file}
 cd ../vagrant
 vagrant box add --force alpine-local #{box_file}"
 
+home_dir    = File.realpath(ENV['USERPROFILE'] || ENV['HOME'])
+
 Vagrant.configure("2") do |config|
     config.vm.box = "alpine-local"
     config.ssh.shell = '/bin/ash'
     config.vm.box_url = box_file
+    config.vm.synced_folder home_dir, "/mnt/home", create: true
 	config.vm.provider "virtualbox" do |vb|
 	  vb.memory = 2048
     end
