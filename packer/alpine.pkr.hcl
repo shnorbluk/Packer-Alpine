@@ -97,7 +97,7 @@ source "virtualbox-iso" "alpine" {
   ssh_wait_timeout    = "20m"
 
   // --- D. Commande de Démarrage (Automatisation de l'Installation) ---
-  boot_wait           = "25s"
+  boot_wait           = "30s"
   boot_command        = [
     "<wait>",
     "root<enter>",
