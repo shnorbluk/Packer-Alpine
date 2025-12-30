@@ -60,6 +60,11 @@ variable "install_podman" {
   default = true
 }
 
+variable "additional_packages" {
+  type    = list(string)
+  default = ["bash", "curl", "vim"]
+}
+
 // -----------------------------------------------------------
 // 2. BLOC SOURCE (BUILDER VIRTUALBOX-ISO)
 // -----------------------------------------------------------
@@ -127,7 +132,7 @@ build {
       // Mettre à jour et installer les dépendances de base
       "apk update",
       "apk upgrade",
-      "apk add virtualbox-guest-additions sudo",
+      "apk add virtualbox-guest-additions sudo ${join(" ", var.additional_packages)}",
 
       // Configuring SSH for Vagrant user
       "mkdir /home/vagrant/.ssh",
