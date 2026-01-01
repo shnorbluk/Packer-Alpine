@@ -133,6 +133,8 @@ build {
       "apk update",
       "apk upgrade",
       "apk add virtualbox-guest-additions sudo ${join(" ", var.additional_packages)}",
+      "rc-update add virtualbox-guest-additions default",
+      "rc-update -u",
 
       // Configuring SSH for Vagrant user
       "mkdir /home/vagrant/.ssh",
