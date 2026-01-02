@@ -162,6 +162,7 @@ build {
       " chmod +x /etc/local.d/mount-shared.start",
       " mkdir /dev/net; mknod /dev/net/tun c 10 200; chmod 0666 /dev/net/tun", # (https://www.kernel.org/doc/html/latest/networking/tuntap.html) for /usr/bin/slirp4netns failed
       " rc-update add local default",
+      " rc-update add cgroups default",
       " openrc",
       " if ! ${var.install_docker}; then",
       "  ln -s /usr/bin/podman /usr/bin/docker", // Créer un alias docker -> podman si docker n'est pas installé
