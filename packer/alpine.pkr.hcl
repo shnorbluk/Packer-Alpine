@@ -155,12 +155,13 @@ build {
       " rc-update -u",
       "fi",
 
+      // PODMAN
       "if ${var.install_podman}; then",
       " apk add podman",
       " echo vagrant:100000:65536 | tee /etc/subuid > /etc/subgid", # for "cannot find UID/GID for user vagrant"
       " echo mount --make-shared / > /etc/local.d/mount-shared.start", # for "WARN[0000] "/" is not a shared mount"
       " chmod +x /etc/local.d/mount-shared.start",
-      " mkdir /dev/net; mknod /dev/net/tun c 10 200; chmod 0666 /dev/net/tun", # (https://www.kernel.org/doc/html/latest/networking/tuntap.html) for /usr/bin/slirp4netns failed
+      " echo tun >> /etc/modules",
       " rc-update add local default",
       " rc-update add cgroups default",
       " openrc",
