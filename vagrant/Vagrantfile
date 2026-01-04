@@ -1,11 +1,6 @@
 packer_file = "../packer/alpine.pkr.hcl"
 box_file = "../packer/alpine-3.23.2.box"
-# box_name = "alpine-local"
-# $script = <<-SCRIPT
-# packer init ${packer_file}
-# packer build ${packer_file}
-# vagrant box add --force alpine-local ${box_file}
-# SCRIPT
+
 script = "cd ../packer
 packer init #{packer_file}
 packer build #{packer_file}
