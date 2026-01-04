@@ -34,10 +34,18 @@ make
 And then connect to it:
 
 ```sh
+cd vagrant
 vagrant ssh
 ```
 
 ## Initialization
+
+### 1. Build the box image
+
+Work in `packer` directory:
+```bash
+cd packer
+```
 
 Before building, initialize Packer plugins:
 
@@ -45,9 +53,7 @@ Before building, initialize Packer plugins:
 packer init .
 ```
 
-## Build the Vagrant box
-
-Run:
+To build the Vagrant image, run:
 
 ```bash
 packer build alpine.pkr.hcl
@@ -55,20 +61,17 @@ packer build alpine.pkr.hcl
 
 This will produce a Vagrant box file: `alpine-3.23.2.box`.
 
-## Using the generated Vagrant box
+## 2. Using the generated Vagrant box
+
+Work in `vagrant` directory:
+```bash
+cd ../vagrant
+```
 
 Add the box locally:
 
 ```bash
-vagrant box add alpine-local alpine-3.23.2.box
-```
-
-Example Vagrantfile:
-
-```hcl
-Vagrant.configure("2") do |config|
-  config.vm.box = "alpine-local"
-end
+vagrant box add alpine-local ../packer/alpine-3.23.2.box
 ```
 
 Then:
