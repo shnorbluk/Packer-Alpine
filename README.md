@@ -80,6 +80,13 @@ Then:
 vagrant up
 ```
 
+And ssh into the VM:
+
+```bash
+vagrant ssh
+```
+
+
 # Customization
 
 You can easily customize:
