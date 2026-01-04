@@ -1,21 +1,4 @@
 // -----------------------------------------------------------
-// 0. BLOC PACKER (REQUIRED)
-// -----------------------------------------------------------
-packer {
-  required_plugins {
-    // Déclare le plugin pour VirtualBox
-    virtualbox = {
-      source  = "github.com/hashicorp/virtualbox"
-      version = ">= 1.1.3"
-    }
-    vagrant = {
-      version = "~> 1"
-      source = "github.com/hashicorp/vagrant"
-    }
-  }
-}
-
-// -----------------------------------------------------------
 // 1. DECLARATION DES VARIABLES (OPTIONNEL MAIS RECOMMANDE)
 // -----------------------------------------------------------
 variable "iso_url" {
@@ -63,6 +46,23 @@ variable "install_podman" {
 variable "additional_packages" {
   type    = list(string)
   default = ["bash", "curl", "vim"]
+}
+
+// -----------------------------------------------------------
+// 1. BLOC PACKER (REQUIRED)
+// -----------------------------------------------------------
+packer {
+  required_plugins {
+    // Déclare le plugin pour VirtualBox
+    virtualbox = {
+      source  = "github.com/hashicorp/virtualbox"
+      version = ">= 1.1.3"
+    }
+    vagrant = {
+      version = "~> 1"
+      source = "github.com/hashicorp/vagrant"
+    }
+  }
 }
 
 // -----------------------------------------------------------

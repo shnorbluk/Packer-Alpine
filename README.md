@@ -89,14 +89,16 @@ vagrant ssh
 
 # Customization
 
-You can easily customize:
+You can easily customize the image, by changing variables in top of `packer/alpine.pkr.hcl`:
 
-- Alpine version (change iso_url and iso_checksum)
-- Disk size
-- Memory / CPU
-- Installed packages
-- Users and SSH configuration
-- Provisioning steps
+- Alpine version (change `iso_url` and `iso_checksum` variable)
+- Disk size (set size in MB in `disk_size_mb` variable)
+- Docker installation (set `install_docker` variable to `true` or `false`)
+- Podman installation (set `install_podman` variable to `true` or `false`)
+- Installed packages (set list of apk packages in `additional_packages` variable)
+- User passwords (set `vagrant_password` and `root_password` variables)
+
+To customize VM, set Memory, CPU, shared folders and other parameters in `vagrant/Vagrantfile`
 
 ## License
 
