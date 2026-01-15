@@ -58,6 +58,10 @@ packer {
       source  = "github.com/hashicorp/virtualbox"
       version = ">= 1.1.3"
     }
+    qemu = {
+      source  = "github.com/hashicorp/qemu"
+      version = ">= 1.1.4"
+    }
     vagrant = {
       version = "~> 1"
       source = "github.com/hashicorp/vagrant"
@@ -77,7 +81,7 @@ source "virtualbox-iso" "alpine" {
   http_directory      = "http"
 
   // --- B. Configuration de la VM ---
-  vm_name             = var.vm_name
+  vm_name             = "${var.vm_name}-vbox"
   guest_os_type       = "Linux26_64"
   disk_size           = var.disk_size_mb
   headless            = false // Lancer la VM sans interface graphique (plus rapide)
@@ -115,11 +119,51 @@ source "virtualbox-iso" "alpine" {
   shutdown_command    = "poweroff"
 }
 
+source "qemu" "alpine" {
+  iso_url      = var.iso_url
+  iso_checksum = var.iso_checksum
+
+  vm_name      = "${var.vm_name}-qemu"
+  disk_size    = var.disk_size_mb
+  # accelerator  = "kvm"
+  format       = "qcow2"
+
+  headless     = false
+
+  http_directory = "http"
+
+  ssh_username      = "root"
+  ssh_password      = "p"
+  ssh_wait_timeout  = "20m"
+
+  boot_wait = "50s"
+  boot_command = [
+    "<wait>",
+    "root<enter>",
+    "ifconfig eth0 up<enter>",
+    "udhcpc -i eth0<enter>",
+    "<wait10>",
+    "wget -O /tmp/answers.txt http://{{ .HTTPIP }}:{{ .HTTPPort }}/answers.qemu.txt<enter>",
+    "export ERASE_DISKS=/dev/vda<enter>",
+    "setup-alpine -f /tmp/answers.txt<enter>",
+    "<wait15>p<enter>p<enter>",
+    "<wait25>mount /dev/vda3 /mnt<enter>",
+    "echo 'PermitRootLogin yes' >> /mnt/etc/ssh/sshd_config<enter>",
+    "reboot<enter>"
+  ]
+
+  shutdown_command = "poweroff"
+}
+
+
 // -----------------------------------------------------------
 // 3. BLOC BUILD (PROVISIONERS ET POST-PROCESSORS)
 // -----------------------------------------------------------
 build {
-  sources = ["source.virtualbox-iso.alpine"]
+  sources = [
+    "source.virtualbox-iso.alpine",
+    "source.qemu.alpine"
+  ]
 
   // --- A. Provisioner Shell (Scripts de post-installation) ---
   provisioner "file" {
@@ -176,7 +220,7 @@ build {
       "sed -i '/PermitRootLogin yes/d' /etc/ssh/sshd_config"
     ]
   }
-      
+
   // --- B. Post-Processor Vagrant (Create the  Vagrant Box) ---
   post-processor "vagrant" {
     output = "${var.vm_name}.box"

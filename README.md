@@ -59,6 +59,11 @@ To build the Vagrant image, run:
 packer build alpine.pkr.hcl
 ```
 
+Or, to build only the box for qemu :
+```bash
+packer build -only="qemu.alpine" alpine.pkr.hcl
+```
+
 This will produce a Vagrant box file: `alpine-3.23.2.box`.
 
 ## 2. Using the generated Vagrant box
