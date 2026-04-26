@@ -1,5 +1,5 @@
 packer_file = "../packer/alpine.pkr.hcl"
-box_file = "../packer/alpine-3.23.2.box"
+box_file = "../packer/alpine-3.23.4.box"
 
 script = "cd ../packer
 packer init #{packer_file}

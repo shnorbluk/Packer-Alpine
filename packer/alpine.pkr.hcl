@@ -3,19 +3,19 @@
 // -----------------------------------------------------------
 variable "iso_url" {
   type    = string
-  default = "https://dl-cdn.alpinelinux.org/alpine/v3.23/releases/x86_64/alpine-standard-3.23.2-x86_64.iso"
+  default = "https://dl-cdn.alpinelinux.org/alpine/v3.23/releases/x86_64/alpine-standard-3.23.4-x86_64.iso"
   description = "URL de l'ISO Alpine"
 }
 
 variable "iso_checksum" {
   type    = string
-  default = "sha256:1b8be1ce264bf50048f2c93d8b4e72dd0f791340090aaed022b366b9a80e3518"
+  default = "sha256:cfef39c7954f7c4447bcb321b9f4a1cef834536a321309d2c31275d9f2475a4e"
   description = "Checksum SHA256 de l'ISO Alpine"
 }
 
 variable "vm_name" {
   type    = string
-  default = "alpine-3.23.2"
+  default = "alpine-3.23.4"
 }
 
 variable "disk_size_mb" {
