@@ -223,6 +223,6 @@ build {
 
   // --- B. Post-Processor Vagrant (Create the  Vagrant Box) ---
   post-processor "vagrant" {
-    output = "${var.vm_name}.box"
+     output = "${var.vm_name}.{{ .Provider }}.box"
   }
 }
