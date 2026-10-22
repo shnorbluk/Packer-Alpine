@@ -18,6 +18,11 @@ Vagrant.configure("2") do |config|
 
     config.ssh.sudo_command = "doas %c"
 
+    # --- Forward all ports in the range 45670-45679 ---
+    (45670..45679).each do |port|
+      config.vm.network "forwarded_port", guest: port, host: port
+    end
+
 #   --- Shared folders ---
     config.vm.synced_folder home_dir, "/mnt/share/home", create: true
     config.vm.synced_folder temp_dir, "/mnt/share/tmp", create: true
