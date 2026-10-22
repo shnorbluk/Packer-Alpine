@@ -38,9 +38,11 @@ cd vagrant
 vagrant ssh
 ```
 
-## Initialization
+## How to run
 
 ### 1. Build the box image
+
+#### Prepare packer
 
 Work in `packer` directory:
 ```bash
@@ -86,24 +88,13 @@ be included in the image.
 
 ## 2. Using the generated Vagrant box
 
-Work in `vagrant` directory:
+To build the VM:
 ```bash
 cd ../vagrant
-```
-
-Add the box locally:
-
-```bash
-vagrant box add alpine-local ../packer/alpine-3.23.2.box
-```
-
-Then:
-
-```bash
 vagrant up
 ```
 
-And ssh into the VM:
+To ssh into the VM:
 
 ```bash
 vagrant ssh
