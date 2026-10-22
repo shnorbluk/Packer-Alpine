@@ -94,10 +94,12 @@ source "virtualbox-iso" "alpine" {
 
   // Configuration mémoire/CPU via VBoxManage
   vboxmanage          = [
-    ["modifyvm", "{{ .Name }}", "--memory", "512"],
-    ["modifyvm", "{{ .Name }}", "--cpus", "1"],
+    ["modifyvm", "{{ .Name }}", "--memory", "4096"],
+    ["modifyvm", "{{ .Name }}", "--cpus", "4"],
     ["modifyvm", "{{ .Name }}", "--accelerate3d", "off"], // Désactiver 3D acceleration si activée
-    ["modifyvm", "{{ .Name }}", "--graphicscontroller", "vboxvga"]  // Spécifie VBoxVGA comme contrôleur graphique
+    ["modifyvm", "{{ .Name }}", "--graphicscontroller", "vmsvga"],  // Spécifie VBoxVGA comme contrôleur graphique
+    ["modifyvm", "{{ .Name }}", "--vram", "16"],  // 16M de mémoire vidéo
+    ["modifyvm", "{{ .Name }}", "--pae", "off"]  // désactiver l'extension d'adresse physique (PAE) et le bit NX (No-Execute)
   ]
 
   // --- C. Configuration SSH (Post-installation) ---
@@ -107,7 +109,7 @@ source "virtualbox-iso" "alpine" {
   ssh_wait_timeout    = "20m"
 
   // --- D. Commande de Démarrage (Automatisation de l'Installation) ---
-  boot_wait           = "40s"
+  boot_wait           = "2m"
   boot_command        = [
     "<wait>",
     "root<enter>",
@@ -120,9 +122,9 @@ source "virtualbox-iso" "alpine" {
     "export https_proxy=${var.proxy_url}<enter>",
     "setup-alpine -f /tmp/answers.txt<enter>", // Lancer l'installation avec le fichier
     "<wait15>p<enter>p<enter>",
-    "<wait20>mount /dev/sda3 /mnt<enter>",
-    "echo 'PermitRootLogin yes' >> /mnt/etc/ssh/sshd_config<enter>",
-    "reboot<enter>"                 // Le script setup-alpine demande un reboot à la fin
+    "<wait1m>mount /dev/sda3 /mnt<enter>",
+   "echo 'PermitRootLogin yes' >> /mnt/etc/ssh/sshd_config<enter>",
+   "reboot<enter>"                 // Le script setup-alpine demande un reboot à la fin
   ]
   shutdown_command    = "poweroff"
 }
