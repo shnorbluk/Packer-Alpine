@@ -3,19 +3,19 @@
 // -----------------------------------------------------------
 variable "iso_url" {
   type    = string
-  default = "https://dl-cdn.alpinelinux.org/alpine/v3.23/releases/x86_64/alpine-standard-3.23.4-x86_64.iso"
+  default = "https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/x86_64/alpine-standard-3.24.2-x86_64.iso"
   description = "URL de l'ISO Alpine"
 }
 
 variable "iso_checksum" {
   type    = string
-  default = "sha256:cfef39c7954f7c4447bcb321b9f4a1cef834536a321309d2c31275d9f2475a4e"
+  default = "sha256:20c026e3a788bfb75fc8b50a54bcc12aee85e3c75909740bba6a6f4563d63296"
   description = "Checksum SHA256 de l'ISO Alpine"
 }
 
 variable "vm_name" {
   type    = string
-  default = "alpine-3.23.4"
+  default = "alpine-3.24.2"
 }
 
 variable "disk_size_mb" {
@@ -220,7 +220,7 @@ build {
       "sed -i '/PermitRootLogin yes/d' /etc/ssh/sshd_config"
     ]
   }
-
+      
   // --- B. Post-Processor Vagrant (Create the  Vagrant Box) ---
   post-processor "vagrant" {
      output = "${var.vm_name}.{{ .Provider }}.box"

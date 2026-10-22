@@ -9,7 +9,7 @@ https://github.com/bobfraser1/packer-alpine
 
 ## Features
 
-- Alpine Linux **3.23.x**
+- Alpine Linux **3.24.x**
 - VirtualBox-compatible
 - Vagrant box output
 
