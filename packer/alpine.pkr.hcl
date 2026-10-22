@@ -187,7 +187,7 @@ build {
       "export https_proxy=${var.proxy_url}",
       "apk update",
       "apk upgrade",
-      "apk add virtualbox-guest-additions sudo ${join(" ", var.additional_packages)}",
+      "apk add virtualbox-guest-additions ${join(" ", var.additional_packages)}",
       "rc-update add virtualbox-guest-additions default",
       "rc-update -u",
 
@@ -196,11 +196,14 @@ build {
       "mv /tmp/authorized_keys /home/vagrant/.ssh/authorized_keys",
       "chmod 600 /home/vagrant/.ssh/authorized_keys",
       "chown -R vagrant:vagrant /home/vagrant/.ssh",
-      "echo vagrant 'ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers.d/vagrant",
 
       // Changing passwords
       "echo 'root:${var.root_password}' | chpasswd",
       "echo 'vagrant:${var.vagrant_password}' | chpasswd",
+
+      // Configure doas with no password for user vagrant
+      "echo permit nopass vagrant > /etc/doas.d/99-vagrant.conf",
+      "ln -s /usr/bin/doas /usr/bin/sudo",
 
       // DOCKER
       "if ${var.install_docker}; then",
