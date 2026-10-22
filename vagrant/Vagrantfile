@@ -44,4 +44,8 @@ Vagrant.configure("2") do |config|
 	  vb.cpus = 2
 	  vb.customize ["modifyvm", :id, "--accelerate3d", "off"]
     end
+
+     config.vm.provision "file", source: "./profile.d", destination: "/tmp/profile.d"
+     config.vm.provision "shell", inline: "mv /tmp/profile.d/* /etc/profile.d/; chmod +x /etc/profile.d/*.sh"
+
 end
