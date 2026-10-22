@@ -1,0 +1,4 @@
+#
+#- host: "C:"
+#  guest: /mnt/share/C
+#  readonly: true
