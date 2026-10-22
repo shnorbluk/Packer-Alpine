@@ -17,6 +17,11 @@ Vagrant.configure("2") do |config|
     end
 
     config.ssh.sudo_command = "doas %c"
+
+#   --- Shared folders ---
+    config.vm.synced_folder home_dir, "/mnt/share/home", create: true
+    config.vm.synced_folder temp_dir, "/mnt/share/tmp", create: true
+    config.vm.synced_folder ".", "/vagrant", disabled: true
 	config.vm.provider "virtualbox" do |vb|
 	  vb.memory = 3072
     end
