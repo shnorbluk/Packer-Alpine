@@ -41,25 +41,7 @@ Vagrant.configure("2") do |config|
 
 	config.vm.provider "virtualbox" do |vb|
 	  vb.memory = 3072
-    end
-    config.trigger.before :up do |trigger|
-        rebuild = false
-        if !File.exist?(box_file)
-            trigger.info = "Packer box not found, building..."
-            rebuild = true
-        elsif File.mtime(packer_file) > File.mtime(box_file)
-            trigger.info = "Packer recipe file modified, rebuilding..."
-            rebuild = true
-        else
-            trigger.info = "Packer box is up to date"
-        end
-        if rebuild
-            trigger.run = {
-                inline:     script
-            }
-        end
-    end
-	  vb.memory = 3072
 	  vb.cpus = 2
 	  vb.customize ["modifyvm", :id, "--accelerate3d", "off"]
+    end
 end
