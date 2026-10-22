@@ -53,7 +53,8 @@ Before building, initialize Packer plugins:
 packer init .
 ```
 
-To build the Vagrant image, run:
+#### Build without any proxy
+If you can access Internet directly, run the following to build the Vagrant image:
 
 ```bash
 packer build alpine.pkr.hcl
@@ -65,6 +66,23 @@ packer build -only="qemu.alpine" alpine.pkr.hcl
 ```
 
 This will produce a Vagrant box file: `alpine-3.23.2.box`.
+
+#### Build with a proxy
+If you have to use a proxy to access Internet, first create a `local.pkrvars.hcl` file:
+
+```hcl
+proxy_url = "http://proxy_ip:port"
+```
+
+Then run these commands to build the image:
+
+```powershell
+$env:https_proxy="http://proxy_ip:port"
+packer build -var-file="local.pkrvars.hcl" alpine.pkr.hcl
+```
+
+This will produce a Vagrant box file: `alpine-3.23.2.box`, independent of your proxy : the proxy configuration will not
+be included in the image.
 
 ## 2. Using the generated Vagrant box
 

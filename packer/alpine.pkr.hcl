@@ -48,6 +48,12 @@ variable "additional_packages" {
   default = ["bash", "curl", "vim"]
 }
 
+variable "proxy_url" {
+  type    = string
+  default = ""
+  description = "Proxy URL, like http://host:port (or leave empty if no proxy)"
+}
+
 // -----------------------------------------------------------
 // 1. BLOC PACKER (REQUIRED)
 // -----------------------------------------------------------
@@ -110,6 +116,8 @@ source "virtualbox-iso" "alpine" {
     "<wait10>", // Attendre 10 secondes pour que l'interface obtienne une adresse IP
     "wget -O /tmp/answers.txt http://{{ .HTTPIP }}:{{ .HTTPPort }}/answers.txt<enter>", // Télécharger le fichier de réponses
     "export ERASE_DISKS=/dev/sda<enter>",
+    "export PROXYOPTS=${var.proxy_url}<enter>",
+    "export https_proxy=${var.proxy_url}<enter>",
     "setup-alpine -f /tmp/answers.txt<enter>", // Lancer l'installation avec le fichier
     "<wait15>p<enter>p<enter>",
     "<wait20>mount /dev/sda3 /mnt<enter>",
@@ -174,6 +182,7 @@ build {
   provisioner "shell" {
     inline = [
       // Mettre à jour et installer les dépendances de base
+      "export https_proxy=${var.proxy_url}",
       "apk update",
       "apk upgrade",
       "apk add virtualbox-guest-additions sudo ${join(" ", var.additional_packages)}",

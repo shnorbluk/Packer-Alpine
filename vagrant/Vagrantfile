@@ -1,11 +1,5 @@
-packer_file = "../packer/alpine.pkr.hcl"
+require 'yaml'
 box_file = "../packer/alpine-3.24.2.box"
-
-script = "cd ../packer
-packer init #{packer_file}
-packer build #{packer_file}
-cd ../vagrant
-vagrant box add --force alpine-local #{box_file}"
 
 home_dir    = File.realpath(ENV['USERPROFILE'] || ENV['HOME'])
 temp_dir    = ENV['TEMP'] ? File.realpath(ENV['TEMP']) : "/tmp"
