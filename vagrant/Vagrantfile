@@ -1,5 +1,5 @@
 require 'yaml'
-box_file = "../packer/alpine-3.24.2.box"
+box_file = "../packer/alpine-3.24.2.virtualbox.box"
 
 home_dir    = File.realpath(ENV['USERPROFILE'] || ENV['HOME'])
 temp_dir    = File.realpath(ENV['TMP'] || ENV['TEMP'])
