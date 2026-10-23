@@ -19,14 +19,12 @@ IPADDR="dhcp"
 # Fuseau horaire (Ex: Europe/Paris)
 TIMEZONEOPTS="-z Europe/Paris"
 
-# Proxy HTTP (laisser vide)
-PROXYOPTS="none"
-
 # Client NTP
 NTPOPTS="-c busybox"
 
-# Random APK mirror
-APKREPOSOPTS="-1 -c"
+# APK mirror
+APKREPOSOPTS="https://dl-cdn.alpinelinux.org/alpine/v3.24/main
+https://dl-cdn.alpinelinux.org/alpine/v3.24/community"
 
 # Serveur SSH (openssh ou none)
 SSHDOPTS="-c openssh"

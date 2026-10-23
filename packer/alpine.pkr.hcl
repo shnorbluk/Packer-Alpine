@@ -86,6 +86,8 @@ source "virtualbox-iso" "alpine" {
   // Le dossier 'http' doit contenir 'answers.txt' et d'autres fichiers de support.
   http_directory      = "http"
 
+  output_directory = "output-alpine-vbox"
+
   // --- B. Configuration de la VM ---
   vm_name             = "${var.vm_name}-vbox"
   guest_os_type       = "Linux26_64"
@@ -141,12 +143,13 @@ source "qemu" "alpine" {
   headless     = false
 
   http_directory = "http"
+  output_directory = "output-alpine-qemu"
 
   ssh_username      = "root"
   ssh_password      = "p"
   ssh_wait_timeout  = "20m"
 
-  boot_wait = "50s"
+  boot_wait = "1m"
   boot_command = [
     "<wait>",
     "root<enter>",
@@ -155,9 +158,11 @@ source "qemu" "alpine" {
     "<wait10>",
     "wget -O /tmp/answers.txt http://{{ .HTTPIP }}:{{ .HTTPPort }}/answers.qemu.txt<enter>",
     "export ERASE_DISKS=/dev/vda<enter>",
+    "export PROXYOPTS=${var.proxy_url}<enter>",
+    "export https_proxy=${var.proxy_url}<enter>",
     "setup-alpine -f /tmp/answers.txt<enter>",
     "<wait15>p<enter>p<enter>",
-    "<wait25>mount /dev/vda3 /mnt<enter>",
+    "<wait2m>mount /dev/vda3 /mnt<enter>",
     "echo 'PermitRootLogin yes' >> /mnt/etc/ssh/sshd_config<enter>",
     "reboot<enter>"
   ]
