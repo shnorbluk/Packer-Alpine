@@ -25,7 +25,7 @@ TIMEZONEOPTS="-z Europe/Paris"
 # Client NTP
 NTPOPTS="-c busybox"
 
-# Random APK mirror
+# APK mirror
 APKREPOSOPTS="https://dl-cdn.alpinelinux.org/alpine/v3.24/main
 https://dl-cdn.alpinelinux.org/alpine/v3.24/community"
 
