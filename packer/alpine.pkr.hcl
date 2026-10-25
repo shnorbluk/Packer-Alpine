@@ -149,7 +149,7 @@ source "qemu" "alpine" {
   ssh_password      = "p"
   ssh_wait_timeout  = "20m"
 
-  boot_wait = "1m"
+  boot_wait = "2m"
   boot_command = [
     "<wait>",
     "root<enter>",
