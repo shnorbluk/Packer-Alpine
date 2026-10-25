@@ -26,6 +26,9 @@ NTPOPTS="-c busybox"
 APKREPOSOPTS="https://dl-cdn.alpinelinux.org/alpine/v3.24/main
 https://dl-cdn.alpinelinux.org/alpine/v3.24/community"
 
+# Proxy HTTP (laisser vide)
+PROXYOPTS="none"
+
 # Serveur SSH (openssh ou none)
 SSHDOPTS="-c openssh"
 

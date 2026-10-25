@@ -9,14 +9,7 @@ Vagrant.configure("2") do |config|
     config.ssh.shell = '/bin/ash'
     config.vm.box_url = box_file
 
-    config.vm.synced_folder home_dir, "/mnt/home", create: true
-    config.vm.synced_folder temp_dir, "/mnt/tmp", create: true
-
-    (9000..9010).each do |port|
-          config.vm.network "forwarded_port", guest: port, host: port, auto_correct: true
-    end
-
-    config.ssh.sudo_command = "doas %c"
+     config.ssh.sudo_command = "doas %c"
 
     # --- Forward all ports in the range 45670-45679 ---
     (45670..45679).each do |port|

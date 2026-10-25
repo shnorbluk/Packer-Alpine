@@ -20,7 +20,7 @@ IPADDR="dhcp"
 TIMEZONEOPTS="-z Europe/Paris"
 
 # Proxy HTTP (laisser vide)
-#PROXYOPTS="none"
+PROXYOPTS="none"
 
 # Client NTP
 NTPOPTS="-c busybox"
