@@ -208,7 +208,7 @@ build {
 
       // Configure doas with no password for user vagrant
       "echo permit nopass vagrant > /etc/doas.d/99-vagrant.conf",
-      "ln -s /usr/bin/doas /usr/bin/sudo",
+      "[[ -f /usr/bin/sudo ]] || ln -s /usr/bin/doas /usr/bin/sudo",
 
       // DOCKER
       "if ${var.install_docker}; then",
